@@ -1,0 +1,38 @@
+<div class="App">
+  <h1>Angular To-Do Benchmark</h1>
+  
+  <div class="metrics" *ngIf="metric">
+    <p>Last operation (<b>{{ metric.op }}</b>) took: <b>{{ (metric.time).toFixed(2) }} ms</b></p>
+  </div>
+
+  <div class="benchmarks">
+    <button (click)="benchmarkRender(100)">Render 100</button>
+    <button (click)="benchmarkRender(500)">Render 500</button>
+    <button (click)="benchmarkRender(1000)">Render 1000</button>
+    <button (click)="benchmarkUpdate()">Update 50</button>
+    <button (click)="benchmarkDelete()">Delete 50</button>
+    <button (click)="tasks = []">Clear</button>
+  </div>
+
+  <form (submit)="addTask(); $event.preventDefault()" style="margin: 20px 0;">
+    <input name="taskName" [(ngModel)]="taskName" placeholder="Task name" />
+    <select name="taskPriority" [(ngModel)]="taskPriority">
+      <option value="Low">Low</option>
+      <option value="Medium">Medium</option>
+      <option value="High">High</option>
+    </select>
+    <button type="submit">Add Task</button>
+  </form>
+
+  <ul>
+    <li *ngFor="let task of tasks; trackBy: trackByFn" style="display: flex; gap: 10px; margin-bottom: 5px;">
+      <input [ngModel]="task.name" (ngModelChange)="updateTask(task.id, 'name', $event)" />
+      <select [ngModel]="task.priority" (ngModelChange)="updateTask(task.id, 'priority', $event)">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+      <button (click)="removeTask(task.id)">Delete</button>
+    </li>
+  </ul>
+</div>
